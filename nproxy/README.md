@@ -8,7 +8,7 @@ Use it to handle several **t3kit** projects in one local machine. The main advan
 
 ```shell
 docker network create nproxy
-docker run -d -p=80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+docker run -d -p=80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.0.0
 ```
 
 ***
