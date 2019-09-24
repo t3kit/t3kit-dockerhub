@@ -19,7 +19,16 @@ jobs:
       - run: npm install eclint
 
       - name: EditorConfig check
-        run: node_modules/eclint/bin/eclint.js check "**/*.{sh,yml,yaml,json,xml,xlf,html}"
+        run: node_modules/eclint/bin/eclint.js check "**/*.{sh,yml,yaml,json,xml,xlf,html,ini,conf}"
 
-      - name: Lint nproxy Dockerfile
+      - name: EditorConfig check Dockerfiles
+        run: node_modules/eclint/bin/eclint.js check "**/Dockerfile"
+
+      - name: Lint <nproxy> Dockerfile
         run:  docker run -i hadolint/hadolint < nproxy/Dockerfile
+
+      - name: Lint <ubuntu18.04-php7.2-apache2.4> Dockerfile
+        run:  docker run -i hadolint/hadolint < ubuntu18.04/php7.2-apache2.4/Dockerfile
+
+      - name: Lint <ubuntu18.04-php7.3-apache2.4> Dockerfile
+        run:  docker run -i hadolint/hadolint < ubuntu18.04/php7.3-apache2.4/Dockerfile
