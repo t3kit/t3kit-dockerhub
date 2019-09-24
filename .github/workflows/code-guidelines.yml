@@ -1,0 +1,25 @@
+name: Code Guidelines
+# https://github.com/t3kit/.github/blob/master/CONTRIBUTING.md#coding-rules
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    name: Lint code
+
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Lint shell scripts with Shellcheck
+        run: docker run --rm -v "$PWD:/mnt" koalaman/shellcheck-alpine:stable find . -type f -name '*.sh' -exec shellcheck '{}' +
+
+      - run: npm install eclint
+
+      - name: EditorConfig check
+        run: node_modules/eclint/bin/eclint.js check "**/*.{sh,yml,yaml,json,xml,xlf,html}"
+
+      - name: Lint nproxy Dockerfile
+        run:  docker run -i hadolint/hadolint < nproxy/Dockerfile

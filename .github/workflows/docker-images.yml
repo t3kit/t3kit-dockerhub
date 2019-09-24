@@ -1,0 +1,30 @@
+name: Docker images
+# https://github.com/t3kit/t3kit-starter#local-development-environment-based-on-docker
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    name: nproxy
+
+    runs-on: ubuntu-18.04
+
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Docker build nproxy
+        run: docker -D build -t nproxy nproxy/
+
+      - name: Run nginx-proxy for t3kit
+        run: docker run -d -p=80:80 --name=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro nproxy
+
+      - name: Run whoami container with env -> VIRTUAL_HOST=t3kit9.local
+        run: docker run -d -e VIRTUAL_HOST=t3kit9.local jwilder/whoami
+
+      - name: Show running containers
+        run: docker ps
+
+      - name: curl t3kit9.local
+        run: "curl -vfsSL -H 'Host: t3kit9.local' --url 'localhost/'"
