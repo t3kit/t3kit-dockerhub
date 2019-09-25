@@ -28,7 +28,7 @@ jobs:
         run: "curl -vfsSL -H 'Host: t3kit9.local' --url 'localhost/'"
 
 
-  ubuntu18.04-php7.2-apache2.4:
+  ubuntu1804-php72-apache24:
     name: ubuntu18.04-php7.2-apache2.4
     runs-on: ubuntu-18.04
     steps:
@@ -48,7 +48,7 @@ jobs:
         run: docker exec -i ubuntu18.04-php7.2-apache2.4 curl -vfsSL localhost
 
 
-  ubuntu18.04-php7.3-apache2.4:
+  ubuntu1804-php73-apache24:
     name: ubuntu18.04-php7.3-apache2.4
     runs-on: ubuntu-18.04
     steps:
