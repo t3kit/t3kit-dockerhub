@@ -24,6 +24,11 @@ jobs:
       - name: Show running containers
         run: docker ps
 
+      - name: Sleep 10s
+        uses: maddox/actions/sleep@master
+        with:
+          args: "10"
+
       - name: curl t3kit9.local
         run: "curl -vfsSL -H 'Host: t3kit9.local' --url 'localhost/'"
 
