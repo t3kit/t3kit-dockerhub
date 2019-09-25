@@ -11,12 +11,12 @@ Docker images to run t3kit and TYPO3 locally placed on Docker Hub
 - [Required dependencies](#required-dependencies)
 - [Docker images](#docker-images)
 
-## General info about t3kit project
+### General info about t3kit project
 
-- [t3kit Roadmap](#t3kit-roadmap)
-- [Versioning](#versioning)
-- [t3kit project structure](#t3kit-project-structure)
 - [Documentation](https://t3kit.gitbook.io/doc)
+- [t3kit Roadmap](https://t3kit.gitbook.io/doc/t3kit-roadmap)
+- [Versioning](https://t3kit.gitbook.io/doc/t3kit-versioning)
+- [t3kit project structure](https://t3kit.gitbook.io/doc/t3kit-project-structure)
 - [Contributing to t3kit](https://github.com/t3kit/.github/blob/master/CONTRIBUTING.md)
 - [Code of Conduct](https://github.com/t3kit/.github/blob/master/CODE_OF_CONDUCT.md)
 - [Support](https://github.com/t3kit/.github/blob/master/SUPPORT.md)
