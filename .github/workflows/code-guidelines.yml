@@ -32,3 +32,6 @@ jobs:
 
       - name: Lint <ubuntu18.04-php7.3-apache2.4> Dockerfile
         run:  docker run -i hadolint/hadolint < ubuntu18.04/php7.3-apache2.4/Dockerfile
+
+      - name: Lint <php7.3-apache2.4-stretch> Dockerfile
+        run:  docker run -i hadolint/hadolint < php7.3-apache2.4-stretch/Dockerfile

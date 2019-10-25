@@ -72,3 +72,23 @@ jobs:
 
       - name: curl localhost
         run: docker exec -i ubuntu18.04-php7.3-apache2.4 curl -vfsSL localhost
+
+  php73-apache24-stretch:
+    name: php7.3-apache2.4-stretch
+    runs-on: ubuntu-18.04
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Docker build <php7.3-apache2.4-stretch>
+        run: docker -D build -t php7.3-apache2.4-stretch php7.3-apache2.4-stretch/
+
+      - name: Run <php7.3-apache2.4-stretch>
+        run: docker run -d --name=php7.3-apache2.4-stretch php7.3-apache2.4-stretch
+
+
+      - name: Show running containers
+        run: docker ps
+
+      - name: curl localhost
+        run: docker exec -i php7.3-apache2.4-stretch curl -vfsSL localhost
