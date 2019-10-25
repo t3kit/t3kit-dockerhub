@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker build <ubuntu18.04-php7.2-apache2.4>
-        run: docker -D build -t ubuntu18.04-php7.2-apache2.4 ubuntu18.04/php7.2-apache2.4/
+        run: DOCKER_BUILDKIT=1 docker -D build -t ubuntu18.04-php7.2-apache2.4 ubuntu18.04/php7.2-apache2.4/
 
       - name: Run <ubuntu18.04-php7.2-apache2.4>
         run: docker run -d --name=ubuntu18.04-php7.2-apache2.4 ubuntu18.04-php7.2-apache2.4
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker build <ubuntu18.04-php7.3-apache2.4>
-        run: docker -D build -t ubuntu18.04-php7.3-apache2.4 ubuntu18.04/php7.3-apache2.4/
+        run: DOCKER_BUILDKIT=1 docker -D build -t ubuntu18.04-php7.3-apache2.4 ubuntu18.04/php7.3-apache2.4/
 
       - name: Run <ubuntu18.04-php7.3-apache2.4>
         run: docker run -d --name=ubuntu18.04-php7.3-apache2.4 ubuntu18.04-php7.3-apache2.4
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker build <php7.3-apache2.4-stretch>
-        run: docker -D build -t php7.3-apache2.4-stretch php7.3-apache2.4-stretch/
+        run: DOCKER_BUILDKIT=1 docker -D build -t php7.3-apache2.4-stretch php7.3-apache2.4-stretch/
 
       - name: Run <php7.3-apache2.4-stretch>
         run: docker run -d --name=php7.3-apache2.4-stretch php7.3-apache2.4-stretch
