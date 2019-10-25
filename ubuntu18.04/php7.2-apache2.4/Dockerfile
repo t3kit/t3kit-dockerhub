@@ -10,7 +10,6 @@
 
 FROM ubuntu:18.04
 
-# nginx-proxy git hash
 LABEL os="ubuntu:18.04"
 LABEL http-server="apache2.4"
 LABEL php="7.2"
@@ -77,10 +76,13 @@ WORKDIR /var/www/html
 
 RUN mkdir -vp /var/www/html/public
 
-EXPOSE 80 443
+EXPOSE 80
 
 HEALTHCHECK CMD curl -f http://localhost || exit 1
 
 ENV DEBIAN_FRONTEND=dialog
 
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apachectl", "-D", "FOREGROUND"]
