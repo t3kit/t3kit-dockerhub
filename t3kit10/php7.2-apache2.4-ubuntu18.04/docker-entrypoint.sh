@@ -16,7 +16,7 @@ else
         usermod -u "${USER_ID}" www-data
     fi
 fi
-echo id www-data
+id www-data
 
 # Add VIRTUAL HOST to hosts file on web container
 if [[ -n $VIRTUAL_HOST ]]
