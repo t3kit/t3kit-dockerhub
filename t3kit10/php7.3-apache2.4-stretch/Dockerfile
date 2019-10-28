@@ -2,7 +2,7 @@
 # Web server docker image for t3kit project
 # Web server docker image for TYPO3
 #
-# php7.3-apache2.4-stretch
+# t3kit/10-php7.3-apache2.4-stretch
 #
 # https://github.com/t3kit/t3kit-starter
 # https://github.com/t3kit/t3kit-dockerhub
@@ -14,8 +14,8 @@ LABEL os="debian:stretch-slim"
 LABEL http-server="apache2.4"
 LABEL php="7.3"
 LABEL support.t3kit="10"
-LABEL support.typo3="9,10"
-LABEL image.name="php7.3-apache2.4-stretch"
+LABEL support.typo3="10"
+LABEL image.name="t3kit/10-php7.3-apache2.4-stretch"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm-256color
