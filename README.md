@@ -1,6 +1,6 @@
 # t3kit-dockerhub
 
-Docker images to run t3kit and TYPO3 locally placed on Docker Hub
+Docker images to run t3kit and TYPO3 locally
 
 ![](https://github.com/t3kit/t3kit-dockerhub/workflows/Code%20Guidelines/badge.svg)
 ![](https://github.com/t3kit/t3kit-dockerhub/workflows/Docker%20images/badge.svg)
@@ -9,7 +9,9 @@ Docker images to run t3kit and TYPO3 locally placed on Docker Hub
 
 - [About](#about)
 - [Required dependencies](#required-dependencies)
-- [Docker images](#docker-images)
+- [Image naming convention](#image-naming-convention)
+- [File structure](#file-structure)
+- [t3kit Docker images](#t3kit-docker-images)
 
 ### General info about t3kit project
 
@@ -26,44 +28,89 @@ Docker images to run t3kit and TYPO3 locally placed on Docker Hub
 
 ## About
 
-**t3kit-dockerhub** is a bunch of Docker images to use with t3kit project for local development and testing
+**t3kit-dockerhub** is a bunch of Docker images to use with t3kit project and TYPO3 for local development and testing
 
 ## Required dependencies
 
 - [Docker](https://docs.docker.com/install/) >= v19.03.1
-- [Docker Compose](https://docs.docker.com/compose/install/) >= v1.24.1
 
-## Docker images
+## Image naming convention
 
-### ubuntu18.04-php7.2-apache2.4
+_Example:_
+`t3kit/10-php7.3-apache2.4-ubuntu18.04:1.0.0`
 
-```shell
-ubuntu18.04/php7.2-apache2.4/Dockerfile
+|t3kit version|PHP version|Apache version|base OS|Image version (semver)|
+|-------------|-----------|--------------|-------|----------------------|
+|t3kit/10     |php7.3     |apache2.4     |ubuntu18.04            |:1.0.0|
+
+## File structure
+
+```text
+t3kit-dockerhub/
+├── .github/       # github actions
+├── nproxy/
+│   ├── Dockerfile
+│   └── nginx.tmpl       # nginx template
+└── t3kit10/
+    ├── php7.2-apache2.4-ubuntu18.04/
+    │   ├── docker-entrypoint.sh
+    │   ├── Dockerfile
+    │   ├── typo3.conf       # TYPO3 apache virtual host config
+    │   └── typo3.ini       # TYPO3 php config
+    ├── php7.3-apache2.4-stretch/
+    │   ├── docker-entrypoint.sh
+    │   ├── Dockerfile
+    │   ├── typo3.conf
+    │   └── typo3.ini
+    └── php7.3-apache2.4-ubuntu18.04/
+        ├── docker-entrypoint.sh
+        ├── Dockerfile
+        ├── typo3.conf
+        └── typo3.ini
 ```
 
-Docker image with HTTP server and PHP preinstalled
+## t3kit Docker images
 
-- Ubuntu18.04
-- php7.2
-- apache2.4
-
-### ubuntu18.04-php7.3-apache2.4
+### t3kit/10-php7.2-apache2.4-ubuntu18.04
 
 ```shell
-ubuntu18.04/php7.3-apache2.4/Dockerfile
-```
-
 Docker image with HTTP server and PHP preinstalled
 
-- Ubuntu18.04
-- php7.3
-- apache2.4
+os="ubuntu:18.04"
+http-server="apache2.4"
+php="7.2"
+support.t3kit="10"
+support.typo3="10"
+image.name="t3kit/10-php7.2-apache2.4-ubuntu18.04"
+```
+
+### t3kit/10-php7.3-apache2.4-ubuntu18.04
+
+```shell
+Docker image with HTTP server and PHP preinstalled
+
+os="ubuntu:18.04"
+http-server="apache2.4"
+php="7.3"
+support.t3kit="10"
+support.typo3="10"
+image.name="t3kit/10-php7.3-apache2.4-ubuntu18.04"
+```
+
+### t3kit/10-php7.3-apache2.4-stretch
+
+```shell
+Docker image with HTTP server and PHP preinstalled
+
+os="debian:stretch-slim"
+http-server="apache2.4"
+php="7.3"
+support.t3kit="10"
+support.typo3="10"
+image.name="t3kit/10-php7.3-apache2.4-stretch"
+```
 
 ### nproxy
-
-```shell
-nproxy/Dockerfile
-```
 
 #### Nginx proxy to use with t3kit project
 

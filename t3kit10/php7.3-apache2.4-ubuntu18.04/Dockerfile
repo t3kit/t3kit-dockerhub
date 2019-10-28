@@ -2,7 +2,7 @@
 # Web server docker image for t3kit project
 # Web server docker image for TYPO3
 #
-# t3kit/10-ubuntu18.04-php7.3-apache2.4
+# t3kit/10-php7.3-apache2.4-ubuntu18.04
 #
 # https://github.com/t3kit/t3kit-starter
 # https://github.com/t3kit/t3kit-dockerhub
@@ -15,7 +15,7 @@ LABEL http-server="apache2.4"
 LABEL php="7.3"
 LABEL support.t3kit="10"
 LABEL support.typo3="10"
-LABEL image.name="t3kit/10-ubuntu18.04-php7.3-apache2.4"
+LABEL image.name="t3kit/10-php7.3-apache2.4-ubuntu18.04"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm-256color
