@@ -18,8 +18,8 @@ jobs:
       - name: Run nginx-proxy for t3kit
         run: docker run -d -p=80:80 --name=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro nproxy
 
-      - name: Run whoami container with env VIRTUAL_HOST=t3kit9.local
-        run: docker run -d -e VIRTUAL_HOST=t3kit9.local jwilder/whoami
+      - name: Run whoami container with env VIRTUAL_HOST=t3kit10.local
+        run: docker run -d -e VIRTUAL_HOST=t3kit10.local jwilder/whoami
 
       - name: Show running containers
         run: docker ps
@@ -29,11 +29,11 @@ jobs:
         with:
           args: "10"
 
-      - name: curl t3kit9.local
-        run: "curl -vfsSL -H 'Host: t3kit9.local' --url 'localhost/'"
+      - name: curl t3kit10.local
+        run: "curl -vfsSL -H 'Host: t3kit10.local' --url 'localhost/'"
 
 
-  php72-apache24-ubuntu1804:
+  t3kit10-php72-apache24-ubuntu1804:
     name: php7.2-apache2.4-ubuntu18.04
     runs-on: ubuntu-18.04
     steps:
@@ -53,7 +53,7 @@ jobs:
         run: docker exec -i php7.2-apache2.4-ubuntu18.04 curl -vfsSL localhost
 
 
-  php73-apache24-ubuntu1804:
+  t3kit10-php73-apache24-ubuntu1804:
     name: php7.3-apache2.4-ubuntu18.04
     runs-on: ubuntu-18.04
     steps:
@@ -71,9 +71,9 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i ubuntu18.04-php7.3-apache2.4 curl -vfsSL localhost
+        run: docker exec -i php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
 
-  php73-apache24-stretch:
+  t3kit10-php73-apache24-stretch:
     name: php7.3-apache2.4-stretch
     runs-on: ubuntu-18.04
     steps:
