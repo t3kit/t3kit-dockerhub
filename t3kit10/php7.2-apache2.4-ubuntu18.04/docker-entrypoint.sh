@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-# Make www-data user use id from hosts user to make shared folder writable. (!!!Only for Ubuntu)
+# Make www-data user use id from hosts user to make shared folder writable.
 if [ -z "$USER_ID" ]
 then
     echo "USER_ID variable is not set."
