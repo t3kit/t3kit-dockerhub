@@ -88,4 +88,3 @@ ENV DEBIAN_FRONTEND=dialog
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["apachectl", "-D", "FOREGROUND"]

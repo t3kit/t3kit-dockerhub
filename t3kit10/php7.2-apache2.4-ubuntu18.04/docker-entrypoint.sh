@@ -40,4 +40,16 @@ then
     chown www-data /var/www/html/public/typo3temp/
 fi
 
-exec "$@"
+
+# setup apache2 envvars
+: "${APACHE_CONFDIR:=/etc/apache2}"
+: "${APACHE_ENVVARS:=$APACHE_CONFDIR/envvars}"
+if [[ -f "$APACHE_ENVVARS" ]]
+then
+    # shellcheck source=/etc/apache2/envvars
+    # shellcheck disable=SC1091
+    . "$APACHE_ENVVARS"
+fi
+
+# run apache2 using "exec form" with PID 1
+exec apache2 -DFOREGROUND
