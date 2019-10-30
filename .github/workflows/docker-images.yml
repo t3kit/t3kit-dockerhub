@@ -34,61 +34,81 @@ jobs:
 
 
   t3kit10-php72-apache24-ubuntu1804:
-    name: php7.2-apache2.4-ubuntu18.04
+    name: t3kit10-php7.2-apache2.4-ubuntu18.04
     runs-on: ubuntu-18.04
     steps:
 
       - uses: actions/checkout@v1
 
-      - name: Docker build <php7.2-apache2.4-ubuntu18.04>
-        run: DOCKER_BUILDKIT=1 docker -D build -t php7.2-apache2.4-ubuntu18.04 t3kit10/php7.2-apache2.4-ubuntu18.04/
+      - name: Docker build <t3kit10-php7.2-apache2.4-ubuntu18.04>
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.2-apache2.4-ubuntu18.04 t3kit10/php7.2-apache2.4-ubuntu18.04/
 
       - name: Run <php7.2-apache2.4-ubuntu18.04>
-        run: docker run -d --name=php7.2-apache2.4-ubuntu18.04 php7.2-apache2.4-ubuntu18.04
+        run: docker run -d --name=t3kit10-php7.2-apache2.4-ubuntu18.04 t3kit10-php7.2-apache2.4-ubuntu18.04
 
       - name: Show running containers
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i php7.2-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.2-apache2.4-ubuntu18.04 curl -vfsSL localhost
 
 
   t3kit10-php73-apache24-ubuntu1804:
-    name: php7.3-apache2.4-ubuntu18.04
+    name: t3kit10-php7.3-apache2.4-ubuntu18.04
     runs-on: ubuntu-18.04
     steps:
 
       - uses: actions/checkout@v1
 
-      - name: Docker build <php7.3-apache2.4-ubuntu18.04>
-        run: DOCKER_BUILDKIT=1 docker -D build -t php7.3-apache2.4-ubuntu18.04 t3kit10/php7.3-apache2.4-ubuntu18.04/
+      - name: Docker build <t3kit10-php7.3-apache2.4-ubuntu18.04>
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.3-apache2.4-ubuntu18.04 t3kit10/php7.3-apache2.4-ubuntu18.04/
 
-      - name: Run <php7.3-apache2.4-ubuntu18.04>
-        run: docker run -d --name=php7.3-apache2.4-ubuntu18.04 php7.3-apache2.4-ubuntu18.04
+      - name: Run <t3kit10-php7.3-apache2.4-ubuntu18.04>
+        run: docker run -d --name=t3kit10-php7.3-apache2.4-ubuntu18.04 t3kit10-php7.3-apache2.4-ubuntu18.04
 
 
       - name: Show running containers
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
 
   t3kit10-php73-apache24-stretch:
-    name: php7.3-apache2.4-stretch
+    name: t3kit10-php7.3-apache2.4-stretch
     runs-on: ubuntu-18.04
     steps:
 
       - uses: actions/checkout@v1
 
-      - name: Docker build <php7.3-apache2.4-stretch>
-        run: DOCKER_BUILDKIT=1 docker -D build -t php7.3-apache2.4-stretch t3kit10/php7.3-apache2.4-stretch/
+      - name: Docker build <t3kit10-php7.3-apache2.4-stretch>
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.3-apache2.4-stretch t3kit10/php7.3-apache2.4-stretch/
 
-      - name: Run <php7.3-apache2.4-stretch>
-        run: docker run -d --name=php7.3-apache2.4-stretch php7.3-apache2.4-stretch
+      - name: Run <t3kit10-php7.3-apache2.4-stretch>
+        run: docker run -d --name=t3kit10-php7.3-apache2.4-stretch t3kit10-php7.3-apache2.4-stretch
 
 
       - name: Show running containers
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i php7.3-apache2.4-stretch curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.3-apache2.4-stretch curl -vfsSL localhost
+
+  t3kit89-php73-apache24-stretch:
+    name: t3kit89-php7.3-apache2.4-ubuntu18.04
+    runs-on: ubuntu-18.04
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Docker build <t3kit89-php7.3-apache2.4-ubuntu18.04>
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit89-php7.3-apache2.4-ubuntu18.04 t3kit8.9/php7.3-apache2.4-ubuntu18.04/
+
+      - name: Run <t3kit89-php7.3-apache2.4-ubuntu18.04>
+        run: docker run -d --name=t3kit89-php7.3-apache2.4-ubuntu18.04 t3kit89-php7.3-apache2.4-ubuntu18.04
+
+
+      - name: Show running containers
+        run: docker ps
+
+      - name: curl localhost
+        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
