@@ -51,6 +51,11 @@ t3kit-dockerhub/
 ├── nproxy/
 │   ├── Dockerfile
 │   └── nginx.tmpl       # nginx template
+├── t3kit8.9/
+│   └── php7.3-apache2.4-ubuntu18.04/
+│       ├── Dockerfile
+│       ├── typo3.conf
+│       └── typo3.ini
 └── t3kit10/
     ├── php7.2-apache2.4-ubuntu18.04/
     │   ├── docker-entrypoint.sh
@@ -108,6 +113,19 @@ php="7.3"
 support.t3kit="10"
 support.typo3="10"
 image.name="t3kit/10-php7.3-apache2.4-stretch"
+```
+
+### t3kit/8.9-php7.3-apache2.4-ubuntu18.04
+
+```shell
+Docker image with HTTP server and PHP preinstalled
+
+os="ubuntu:18.04"
+http-server="apache2.4"
+php="7.3"
+support.t3kit="8.9"
+support.typo3="9"
+image.name="t3kit/8.9-php7.3-apache2.4-ubuntu18.04"
 ```
 
 ### nproxy
