@@ -73,6 +73,8 @@ RUN phpenmod typo3; \
 
 WORKDIR /var/www/html
 
+RUN mkdir -vp /var/www/html/web
+
 RUN rm index.html
 
 EXPOSE 80 443
