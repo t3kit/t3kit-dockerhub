@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker build <nproxy>
-        run: docker -D build -t nproxy nproxy/
+        run: DOCKER_BUILDKIT=1 docker -D build -t nproxy nproxy/
 
       - name: Run nginx-proxy for t3kit
         run: docker run -d -p=80:80 --name=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro nproxy
