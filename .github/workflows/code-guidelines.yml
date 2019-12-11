@@ -38,3 +38,7 @@ jobs:
 
       - name: Lint <t3kit89-php7.3-apache2.4-ubuntu18.04> Dockerfile
         run:  docker run -i hadolint/hadolint < t3kit8.9/php7.3-apache2.4-ubuntu18.04/Dockerfile
+
+      - name: Lint <mkcert> Dockerfile
+        run:  docker run -i hadolint/hadolint < mkcert/Dockerfile
+

@@ -112,3 +112,16 @@ jobs:
 
       - name: curl localhost
         run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
+
+  mkcert:
+    name: mkcert
+    runs-on: ubuntu-18.04
+    steps:
+
+      - uses: actions/checkout@v1
+
+      - name: Docker build <mkcert>
+        run: DOCKER_BUILDKIT=1 docker -D build -t mkcert mkcert/
+
+      - name: Run mkcert t3kit_first_setup
+        run: docker run -rm t3kit/mkcert:1.0.0 t3kit_first_setup
