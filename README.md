@@ -51,6 +51,9 @@ t3kit-dockerhub/
 ├── nproxy/
 │   ├── Dockerfile
 │   └── nginx.tmpl       # nginx template
+├── mkcert/
+│   ├── Dockerfile
+│   └── docker-entrypoint.sh
 ├── t3kit8.9/
 │   └── php7.3-apache2.4-ubuntu18.04/
 │       ├── Dockerfile
@@ -140,8 +143,98 @@ Use it to handle several **t3kit** projects in one local machine. The main advan
 
 ```shell
 docker network create nproxy
-docker run -d -p=80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.0.0
+docker run -d -p=80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.1.0
 ```
+
+#### HTTPS support for Nginx proxy
+
+```shell
+docker network create nproxy
+docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.1.0
+```
+
+### mkcert
+
+HTTPS Support for local development with Nginx proxy
+
+We are using a Docker image to generate all needed keys and certificates.
+This image is based on `mkcert` tool. It is also possible to use it without docker image, but you will need to install this tool into your system. [mkcert documentation](https://github.com/FiloSottile/mkcert)
+
+#### Setup
+
+1. Create a folder on the host where we will store our keys and certificates.
+
+    ```shell
+    mkdir ~/.certs
+    cd ~/.certs
+    ```
+
+2. Create local CA
+3. Generate locally-trusted certificates based on local CA.
+
+    We can combine two (2&3) steps in one:
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    ```
+
+4. Install local CA in the system trust store
+
+    Import and trust a self-signed CA certificate
+
+    macOS:
+
+    ```shell
+    cd ~/.certs/ && sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" "local_ca/rootCA.pem"
+    ```
+
+    Ubuntu:
+
+    ```shell
+    TBD
+    ```
+
+5. Configure the server to use the certificates.
+
+    Just start [nproxy](#nproxy) with HTTPS support.
+
+#### Options
+
+- `t3kit_first_setup` - create a root certificate for a local certificate authority and generate locally-trusted certificates for `*.t3.localhost` domains.
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    ```
+
+    *Note:* With this wildcard based certificate we can have any amount of third-level domain virtual hosts without creating new certificates.
+
+- `local_ca` - create a root certificate for a local certificate authority
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 local_ca
+    ```
+
+- `t3_localhost` - generate locally-trusted certificates for `*.t3.localhost` domains
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3_localhost
+    ```
+
+- `add` - generate localhost based locally-trusted certificates
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 add test
+    ```
+
+    It will create a locally-trusted certificate for `test.localhost` domain
+
+- generate custom locally-trusted certificates
+
+    ```shell
+    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
+    ```
+
+    It will create a locally-trusted certificate for `newsite.local` domain
 
 ***
 

@@ -20,8 +20,9 @@ LABEL mkcert_hash="cb6311c"
 # add Docker entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 
+RUN mkdir -vp /certs/server
 
-WORKDIR /certs
+WORKDIR /certs/server
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 

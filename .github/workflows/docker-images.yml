@@ -124,4 +124,4 @@ jobs:
         run: DOCKER_BUILDKIT=1 docker -D build -t mkcert mkcert/
 
       - name: Run mkcert t3kit_first_setup
-        run: docker run -rm t3kit/mkcert:1.0.0 t3kit_first_setup
+        run: docker run --rm t3kit/mkcert:1.0.0 t3kit_first_setup
