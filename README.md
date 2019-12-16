@@ -153,6 +153,8 @@ docker network create nproxy
 docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.1.0
 ```
 
+#### [Docker compose config for nproxy](https://github.com/t3kit/nproxy)
+
 ### mkcert
 
 HTTPS Support for local development with Nginx proxy
@@ -175,7 +177,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
     We can combine two (2&3) steps in one:
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
     ```
 
 4. Install local CA in the system trust store
@@ -203,7 +205,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 - `t3kit_first_setup` - create a root certificate for a local certificate authority and generate locally-trusted certificates for `*.t3.localhost` domains.
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
     ```
 
     *Note:* With this wildcard based certificate we can have any amount of third-level domain virtual hosts without creating new certificates.
@@ -211,19 +213,19 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 - `local_ca` - create a root certificate for a local certificate authority
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 local_ca
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 local_ca
     ```
 
 - `t3_localhost` - generate locally-trusted certificates for `*.t3.localhost` domains
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3_localhost
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3_localhost
     ```
 
-- `add` - generate localhost based locally-trusted certificates
+- `add` - generate `.localhost` based locally-trusted certificates
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 add test
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 add test
     ```
 
     It will create a locally-trusted certificate for `test.localhost` domain
@@ -231,7 +233,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 - generate custom locally-trusted certificates
 
     ```shell
-    d run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
+    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
     ```
 
     It will create a locally-trusted certificate for `newsite.local` domain
