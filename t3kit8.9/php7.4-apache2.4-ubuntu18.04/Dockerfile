@@ -48,7 +48,6 @@ RUN apt-get update \
     php7.4-xml=7.4.* \
     php7.4-zip=7.4.* \
     php7.4-intl=7.4.* \
-    php7.4-imagick=7.4.* \
 && rm -rf /var/lib/apt/lists/*
 
 
