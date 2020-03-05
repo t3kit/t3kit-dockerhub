@@ -91,6 +91,9 @@ map $http_upgrade $proxy_connection {
     '' close;
 }
 
+# set client body size to 200M / the maximum size of an uploaded file to 200m (same as in TYPO3)
+client_max_body_size 200M;
+
 # Apply fix for very long server names
 server_names_hash_bucket_size 128;
 
