@@ -2,7 +2,7 @@
 # Web server docker image for t3kit project
 # Web server docker image for TYPO3
 #
-# t3kit/10-php7.3-apache2.4-stretch
+# t3kit/10-php7.4-apache2.4-buster
 #
 # https://github.com/t3kit/t3kit-starter
 # https://github.com/t3kit/t3kit-dockerhub
@@ -32,7 +32,6 @@ RUN apt-get update \
     # Install tools
     nano=3.2-* \
     graphicsmagick=1.4* \
-    imagemagick=8:6.* \
     mariadb-client=1:10.3* \
     iputils-ping=3:* \
     locales=2.28-* \
@@ -57,9 +56,8 @@ COPY typo3.conf /etc/apache2/sites-available/
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN docker-php-ext-configure gd \
-        --with-freetype-dir=/usr \
-        --with-jpeg-dir=/usr \
-        --with-png-dir=/usr \
+        --with-freetype \
+        --with-jpeg \
     ; \
     docker-php-ext-install -j "$(nproc)" \
         mysqli \
