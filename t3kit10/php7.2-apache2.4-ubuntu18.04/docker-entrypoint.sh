@@ -31,15 +31,21 @@ then
 fi
 
 # set volume permissions
+# var
 if [[ -d /var/www/html/var/ ]]
 then
     chown www-data /var/www/html/var/
 fi
+# typo3temp
 if [[ -d /var/www/html/public/typo3temp/ ]]
 then
     chown www-data /var/www/html/public/typo3temp/
 fi
-
+# fileadmin
+if [[ -d /var/www/html/public/fileadmin/ ]]
+then
+    chown www-data /var/www/html/public/fileadmin/
+fi
 
 # setup apache2 envvars
 : "${APACHE_CONFDIR:=/etc/apache2}"

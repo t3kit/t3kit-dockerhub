@@ -30,14 +30,21 @@ then
     fi
 fi
 
-# set volume permissions
+# set folder permissions
+# var
 if [[ -d /var/www/html/var/ ]]
 then
     chown www-data /var/www/html/var/
 fi
+# typo3temp
 if [[ -d /var/www/html/public/typo3temp/ ]]
 then
     chown www-data /var/www/html/public/typo3temp/
+fi
+# fileadmin
+if [[ -d /var/www/html/public/fileadmin/ ]]
+then
+    chown www-data /var/www/html/public/fileadmin/
 fi
 
 exec "$@"
