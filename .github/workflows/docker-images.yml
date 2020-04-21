@@ -101,7 +101,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker build <t3kit10-php7.4-apache2.4-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.4-apache2.4-buster t3kit10/php7.3-apache2.4-stretch/
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.4-apache2.4-buster t3kit10/php7.4-apache2.4-buster/
 
       - name: Run <t3kit10-php7.4-apache2.4-buster>
         run: docker run -d --name=t3kit10-php7.4-apache2.4-buster t3kit10-php7.4-apache2.4-buster
