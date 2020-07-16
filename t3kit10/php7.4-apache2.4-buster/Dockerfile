@@ -77,7 +77,8 @@ RUN docker-php-ext-configure gd \
 
 RUN mkdir -vp /var/www/html/public
 
-HEALTHCHECK CMD curl -f http://localhost || exit 1
+ENV VIRTUAL_HOST=localhost
+HEALTHCHECK CMD curl -f $VIRTUAL_HOST || exit 1
 
 ENV DEBIAN_FRONTEND=dialog
 
