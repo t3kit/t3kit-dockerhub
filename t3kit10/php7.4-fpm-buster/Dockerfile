@@ -29,12 +29,12 @@ RUN apt-get update \
     libzip-dev \
     libicu-dev \
     # Install tools
-    nano=3.2-* \
-    graphicsmagick=1.4* \
-    mariadb-client=1:10.3* \
-    iputils-ping=3:* \
-    locales=2.28-* \
-    procps=2:3.3* \
+    nano\
+    graphicsmagick \
+    mariadb-client \
+    iputils-ping \
+    locales \
+    procps \
 && rm -rf /var/lib/apt/lists/* \
 && docker-php-ext-configure gd --with-freetype --with-jpeg \
 && docker-php-ext-install -j"$(nproc)" gd \
