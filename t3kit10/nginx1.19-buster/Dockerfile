@@ -71,7 +71,7 @@ COPY configuration/conf.d/typo3.conf /etc/nginx/conf.d/default.conf
 RUN mkdir -vp /var/www/html/public
 
 ENV VIRTUAL_HOST=localhost
-HEALTHCHECK CMD curl -f $VIRTUAL_HOST || exit 1
+HEALTHCHECK CMD curl -fsSLI $VIRTUAL_HOST || exit 1
 
 ENV DEBIAN_FRONTEND=dialog
 
