@@ -4,16 +4,22 @@ set -e
 set -o pipefail
 
 # Make www-data user use id from hosts user to make shared folder writable.
+echo "USER_ID = $USER_ID"
 if [ -z "$USER_ID" ]
 then
     echo "USER_ID variable is not set."
 else
-    # fetch current userid and groupid for user www-data
-    WWW_DATA_USERID=$(id -u www-data)
-    # if current userid doesn't equal the one from .env, force id of user to the one from .env
-    if [ "$WWW_DATA_USERID" -ne "${USER_ID}" ];then
-        echo "usermod -u ${USER_ID} www-data"
-        usermod -u "${USER_ID}" www-data
+    if [ "$USER_ID" = "mac" ]
+    then
+        echo "Host OS = macOS"
+    else
+        # fetch current userid and groupid for user www-data
+        WWW_DATA_USERID=$(id -u www-data)
+        # if current userid doesn't equal the one from .env, force id of user to the one from .env
+        if [ "$WWW_DATA_USERID" -ne "${USER_ID}" ];then
+            echo "usermod -u ${USER_ID} www-data"
+            usermod -u "${USER_ID}" www-data
+        fi
     fi
 fi
 id www-data

@@ -30,11 +30,11 @@ RUN apt-get update \
     libpng-dev \
     libzip-dev \
     # Install tools
-    nano=3.2-* \
-    graphicsmagick=1.4* \
-    mariadb-client=1:10.3* \
-    iputils-ping=3:* \
-    locales=2.28-* \
+    nano \
+    graphicsmagick \
+    mariadb-client \
+    iputils-ping \
+    locales \
 && rm -rf /var/lib/apt/lists/*
 
 # Set locales
@@ -78,7 +78,7 @@ RUN docker-php-ext-configure gd \
 RUN mkdir -vp /var/www/html/public
 
 ENV VIRTUAL_HOST=localhost
-HEALTHCHECK CMD curl -f $VIRTUAL_HOST || exit 1
+HEALTHCHECK CMD curl -fsSLI $VIRTUAL_HOST || exit 1
 
 ENV DEBIAN_FRONTEND=dialog
 
