@@ -30,7 +30,7 @@ jobs:
           args: "10"
 
       - name: curl t3kit10.local
-        run: "curl -vfsSL -H 'Host: t3kit10.local' --url 'localhost/'"
+        run: "curl -fsSLI -H 'Host: t3kit10.local' --url 'localhost/'"
 
   mkcert:
     name: mkcert
@@ -64,7 +64,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -fsSLI localhost
 
   t3kit89-php74-apache24-ubuntu1804:
     name: t3kit89-php7.4-apache2.4-ubuntu18.04
@@ -84,7 +84,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit89-php7.4-apache2.4-ubuntu18.04 curl -fsSLI localhost
 
   t3kit89-php74-apache24-buster:
     name: t3kit89-php7.4-apache2.4-buster
@@ -104,7 +104,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.4-apache2.4-buster curl -vfsSL localhost
+        run: docker exec -i t3kit89-php7.4-apache2.4-buster curl -fsSLI localhost
 
   # t3kit10
   t3kit10-php72-apache24-ubuntu1804:
@@ -124,7 +124,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.2-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.2-apache2.4-ubuntu18.04 curl -fsSLI localhost
 
 
   t3kit10-php73-apache24-ubuntu1804:
@@ -144,7 +144,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.3-apache2.4-ubuntu18.04 curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.3-apache2.4-ubuntu18.04 curl -fsSLI localhost
 
   t3kit10-php73-apache24-stretch:
     name: t3kit10-php7.3-apache2.4-stretch
@@ -163,7 +163,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.3-apache2.4-stretch curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.3-apache2.4-stretch curl -fsSLI localhost
 
   t3kit10-php74-apache24-buster:
     name: t3kit10-php7.4-apache2.4-buster
@@ -182,7 +182,7 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.4-apache2.4-buster curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.4-apache2.4-buster curl -fsSLI localhost
 
   t3kit10-php74-fpm-buster:
     name: t3kit10-php7.4-fpm-buster
@@ -200,21 +200,21 @@ jobs:
       - name: Show running containers
         run: docker ps
 
-  t3kit10-nginx119-buster:
-    name: t3kit10-nginx1.19-buster
+  t3kit10-php74-fpm-nginx-buster:
+    name: t3kit10-php7.4-fpm-nginx-buster
     runs-on: ubuntu-18.04
     steps:
 
       - uses: actions/checkout@v2
 
-      - name: Docker build <t3kit10-nginx1.19-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-nginx1.19-buster t3kit10/nginx1.19-buster/
+      - name: Docker build <t3kit10-php7.4-fpm-nginx-buster>
+        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.4-fpm-nginx-buster t3kit10/php7.4-fpm-nginx-buster/
 
-      - name: Run <t3kit10-nginx1.19-buster>
-        run: docker run -d --name=t3kit10-nginx1.19-buster t3kit10-nginx1.19-buster
+      - name: Run <t3kit10-php7.4-fpm-nginx-buster>
+        run: docker run -d --name=t3kit10-php7.4-fpm-nginx-buster t3kit10-php7.4-fpm-nginx-buster
 
       - name: Show running containers
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-nginx1.19-buster curl -vfsSL localhost
+        run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -fsSLI localhost
