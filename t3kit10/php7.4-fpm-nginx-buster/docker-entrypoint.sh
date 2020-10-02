@@ -27,13 +27,17 @@ id www-data
 # Add VIRTUAL HOST to hosts file on web container
 if [[ -n $VIRTUAL_HOST ]]
 then
-    if grep -q "$VIRTUAL_HOST" /etc/hosts
-    then
-        echo "$VIRTUAL_HOST already exists"
-    else
-        echo "127.0.0.1 ${VIRTUAL_HOST}" >> /etc/hosts
-        echo "$VIRTUAL_HOST added succesfully"
-    fi
+    IFS=', ' read -r -a hosts <<< "$VIRTUAL_HOST"
+    for host in "${hosts[@]}"
+    do
+        if grep -q "$host" /etc/hosts
+        then
+            echo "$host already exists"
+        else
+            echo "127.0.0.1 ${host}" >> /etc/hosts
+            echo "$host added succesfully"
+        fi
+    done
 fi
 
 # set folder permissions
