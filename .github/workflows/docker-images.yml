@@ -142,5 +142,5 @@ jobs:
       - name: Show running containers
         run: docker ps
 
-      - name: curl $VIRTUAL_HOST_1
-        run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -fsSLI $VIRTUAL_HOST_1
+      - name: curl localhost
+        run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -fsSLI localhost
