@@ -41,15 +41,6 @@ jobs:
         run:  docker run -i hadolint/hadolint < t3kit8.9/php7.4-apache2.4-buster/Dockerfile
 
       # t3kit10
-      - name: Lint <t3kit10-php7.2-apache2.4-ubuntu18.04> Dockerfile
-        run:  docker run -i hadolint/hadolint < t3kit10/php7.2-apache2.4-ubuntu18.04/Dockerfile
-
-      - name: Lint <t3kit10-php7.3-apache2.4-ubuntu18.04> Dockerfile
-        run:  docker run -i hadolint/hadolint < t3kit10/php7.3-apache2.4-ubuntu18.04/Dockerfile
-
-      - name: Lint <t3kit10-php7.3-apache2.4-stretch> Dockerfile
-        run:  docker run -i hadolint/hadolint < t3kit10/php7.3-apache2.4-stretch/Dockerfile
-
       - name: Lint <t3kit10-php7.4-apache2.4-buster> Dockerfile
         run:  docker run -i hadolint/hadolint < t3kit10/php7.4-apache2.4-buster/Dockerfile
 
