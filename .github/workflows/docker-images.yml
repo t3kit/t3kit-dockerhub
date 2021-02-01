@@ -1,5 +1,5 @@
-name: Docker images
-# https://github.com/t3kit/t3kit-starter#local-development-environment-based-on-docker
+name: Build Docker images
+# https://github.com/t3kit/t3kit-starter#quick-start-a-new-project-on-t3kit-base
 
 on: [push, pull_request]
 
@@ -7,7 +7,7 @@ jobs:
 
   nproxy:
     name: nproxy
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -21,20 +21,26 @@ jobs:
       - name: Run whoami container with env VIRTUAL_HOST=t3kit10.local
         run: docker run -d -e VIRTUAL_HOST=t3kit10.local jwilder/whoami
 
+      - name: Show nproxy config
+        run:  docker exec nproxy cat /etc/nginx/conf.d/default.conf
+
+      - name: Show nproxy logs
+        run: docker logs nproxy
+
       - name: Show running containers
         run: docker ps
 
       - name: Sleep 10s
-        uses: maddox/actions/sleep@master
+        uses: jakejarvis/wait-action@master
         with:
-          args: "10"
+          time: '10s'
 
       - name: curl t3kit10.local
-        run: "curl -fsSLI -H 'Host: t3kit10.local' --url 'localhost/'"
+        run: "curl -vfsSLI -H 'Host: t3kit10.local' --url 'localhost/'"
 
   mkcert:
     name: mkcert
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -48,7 +54,7 @@ jobs:
   # t3kit8.9
   t3kit89-php73-apache24-ubuntu1804:
     name: t3kit89-php7.3-apache2.4-ubuntu18.04
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -64,11 +70,11 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -fsSLI localhost
+        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSLI localhost
 
   t3kit89-php74-apache24-ubuntu1804:
     name: t3kit89-php7.4-apache2.4-ubuntu18.04
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -84,11 +90,11 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.4-apache2.4-ubuntu18.04 curl -fsSLI localhost
+        run: docker exec -i t3kit89-php7.4-apache2.4-ubuntu18.04 curl -vfsSLI localhost
 
   t3kit89-php74-apache24-buster:
     name: t3kit89-php7.4-apache2.4-buster
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -104,12 +110,12 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit89-php7.4-apache2.4-buster curl -fsSLI localhost
+        run: docker exec -i t3kit89-php7.4-apache2.4-buster curl -vfsSLI localhost
 
   # t3kit10
   t3kit10-php74-apache24-buster:
     name: t3kit10-php7.4-apache2.4-buster
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -124,11 +130,11 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.4-apache2.4-buster curl -fsSLI localhost
+        run: docker exec -i t3kit10-php7.4-apache2.4-buster curl -vfsSLI localhost
 
   t3kit10-php74-fpm-nginx-buster:
     name: t3kit10-php7.4-fpm-nginx-buster
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v2
@@ -143,4 +149,4 @@ jobs:
         run: docker ps
 
       - name: curl localhost
-        run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -fsSLI localhost
+        run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -vfsSLI localhost

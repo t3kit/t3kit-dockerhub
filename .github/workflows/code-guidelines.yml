@@ -8,43 +8,38 @@ jobs:
 
     name: Lint code
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Lint shell scripts with Shellcheck
         run: docker run --rm -v "$PWD:/mnt" koalaman/shellcheck-alpine:stable find . -type f -name '*.sh' -exec shellcheck '{}' +
 
-      - run: npm install eclint
-
       - name: EditorConfig check
-        run: node_modules/eclint/bin/eclint.js check "**/*.{sh,yml,yaml,json,xml,xlf,html,ini,conf}"
+        run: npx editorconfig-checker
 
-      - name: EditorConfig check Dockerfiles
-        run: node_modules/eclint/bin/eclint.js check "**/Dockerfile"
-
-      - name: Lint <nproxy> Dockerfile
+      - name: Lint <nproxy> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < nproxy/Dockerfile
 
-      - name: Lint <mkcert> Dockerfile
+      - name: Lint <mkcert> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < mkcert/Dockerfile
 
       # t3kit8.9
-      - name: Lint <t3kit89-php7.3-apache2.4-ubuntu18.04> Dockerfile
+      - name: Lint <t3kit89-php7.3-apache2.4-ubuntu18.04> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit8.9/php7.3-apache2.4-ubuntu18.04/Dockerfile
 
-      - name: Lint <t3kit89-php7.4-apache2.4-ubuntu18.04> Dockerfile
+      - name: Lint <t3kit89-php7.4-apache2.4-ubuntu18.04> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit8.9/php7.4-apache2.4-ubuntu18.04/Dockerfile
 
-      - name: Lint <t3kit89-php7.4-apache2.4-buster> Dockerfile
+      - name: Lint <t3kit89-php7.4-apache2.4-buster> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit8.9/php7.4-apache2.4-buster/Dockerfile
 
       # t3kit10
-      - name: Lint <t3kit10-php7.4-apache2.4-buster> Dockerfile
+      - name: Lint <t3kit10-php7.4-apache2.4-buster> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit10/php7.4-apache2.4-buster/Dockerfile
 
-      - name: Lint <t3kit10-php7.4-fpm-nginx-buster> Dockerfile
+      - name: Lint <t3kit10-php7.4-fpm-nginx-buster> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit10/php7.4-fpm-nginx-buster/Dockerfile
 
 
