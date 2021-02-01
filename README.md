@@ -39,7 +39,7 @@ Docker images to run t3kit and TYPO3 locally
 _Example:_
 `t3kit/10-php7.4-fpm-nginx-buster:1.0.0`
 
-|t3kit version|PHP version|Apache version|base OS|Image version (semver)|
+|t3kit version|PHP version|HTTP Server   |base OS|Image version (semver)|
 |-------------|-----------|--------------|-------|----------------------|
 |t3kit/10     |php7.4-fpm |nginx         |debian buster          |:1.0.0|
 
@@ -132,12 +132,12 @@ docker run -d -p 80:80 --name=nproxy --restart=unless-stopped --network=nproxy -
 
 ```shell
 docker network create nproxy
-docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.0
+docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.1
 ```
 
 #### [Docker-compose config for nproxy](https://github.com/t3kit/nproxy)
 
-_!We highly recommend using this variant (with docker-compose) to setup `nproxy`_
+_!We highly recommend using this variant (docker-compose) to setup `nproxy`_
 
 ***
 
@@ -154,7 +154,6 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 
     ```shell
     mkdir ~/.certs
-    cd ~/.certs
     ```
 
 2. Create local CA
