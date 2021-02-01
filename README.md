@@ -32,22 +32,22 @@ Docker images to run t3kit and TYPO3 locally
 
 ## Required dependencies
 
-- [Docker](https://docs.docker.com/install/) >= v19.03.1
+- [Docker](https://docs.docker.com/install/) >= v20.10.2
 
 ## Image naming convention
 
 _Example:_
-`t3kit/10-php7.3-apache2.4-ubuntu18.04:1.0.0`
+`t3kit/10-php7.4-fpm-nginx-buster:1.0.0`
 
 |t3kit version|PHP version|Apache version|base OS|Image version (semver)|
 |-------------|-----------|--------------|-------|----------------------|
-|t3kit/10     |php7.3     |apache2.4     |ubuntu18.04            |:1.0.0|
+|t3kit/10     |php7.4-fpm |nginx         |debian buster          |:1.0.0|
 
 ## File structure
 
 ```text
 t3kit-dockerhub/
-├── .github/       # github actions
+├── .github/             # github actions
 ├── nproxy/
 │   ├── Dockerfile
 │   └── nginx.tmpl       # nginx template
@@ -55,80 +55,62 @@ t3kit-dockerhub/
 │   ├── Dockerfile
 │   └── docker-entrypoint.sh
 ├── t3kit8.9/
-│   └── php7.3-apache2.4-ubuntu18.04/
+│   └── php7.4-apache2.4-ubuntu18.04/
 │       ├── Dockerfile
-│       ├── typo3.conf
-│       └── typo3.ini
+│       ├── typo3.conf     # TYPO3 apache virtual host config
+│       └── typo3.ini      # TYPO3 php config
 └── t3kit10/
-    ├── php7.2-apache2.4-ubuntu18.04/
+    ├── php7.4-apache2.4-buster/
     │   ├── docker-entrypoint.sh
     │   ├── Dockerfile
-    │   ├── typo3.conf       # TYPO3 apache virtual host config
+    │   ├── typo3.conf      # TYPO3 apache virtual host config
     │   └── typo3.ini       # TYPO3 php config
-    ├── php7.3-apache2.4-stretch/
-    │   ├── docker-entrypoint.sh
-    │   ├── Dockerfile
-    │   ├── typo3.conf
-    │   └── typo3.ini
-    └── php7.3-apache2.4-ubuntu18.04/
+    └── php7.4-fpm-nginx-buster/
         ├── docker-entrypoint.sh
         ├── Dockerfile
-        ├── typo3.conf
-        └── typo3.ini
+        ├── typo3.ini       # TYPO3 php config
+        └── configuration/nginx.conf # nginx config
 ```
 
 ## t3kit Docker images
 
-### t3kit/10-php7.2-apache2.4-ubuntu18.04
+### t3kit/10-php7.4-fpm-nginx-buster
 
 ```shell
-Docker image with HTTP server and PHP preinstalled
+Docker image with nginx server and PHP-FPM preinstalled
 
-os="ubuntu:18.04"
-http-server="apache2.4"
-php="7.2"
+os="debian:buster-slim"
+php="7.4"
+nginx="1.18.0"
 support.t3kit="10"
 support.typo3="10"
-image.name="t3kit/10-php7.2-apache2.4-ubuntu18.04"
+image.name="t3kit/10-php7.4-fpm-nginx-buster"
 ```
 
 ### t3kit/10-php7.3-apache2.4-ubuntu18.04
 
 ```shell
-Docker image with HTTP server and PHP preinstalled
+Docker image with apache2 server and PHP preinstalled
 
-os="ubuntu:18.04"
+os="debian:buster-slim"
 http-server="apache2.4"
-php="7.3"
+php="7.4"
 support.t3kit="10"
 support.typo3="10"
-image.name="t3kit/10-php7.3-apache2.4-ubuntu18.04"
-```
-
-### t3kit/10-php7.3-apache2.4-stretch
-
-```shell
-Docker image with HTTP server and PHP preinstalled
-
-os="debian:stretch-slim"
-http-server="apache2.4"
-php="7.3"
-support.t3kit="10"
-support.typo3="10"
-image.name="t3kit/10-php7.3-apache2.4-stretch"
+image.name="t3kit/10-php7.4-apache2.4-buster"
 ```
 
 ### t3kit/8.9-php7.3-apache2.4-ubuntu18.04
 
 ```shell
-Docker image with HTTP server and PHP preinstalled
+Docker image with apache2 server and PHP preinstalled
 
 os="ubuntu:18.04"
 http-server="apache2.4"
-php="7.3"
+php="7.4"
 support.t3kit="8.9"
 support.typo3="9"
-image.name="t3kit/8.9-php7.3-apache2.4-ubuntu18.04"
+image.name="t3kit/8.9-php7.4-apache2.4-ubuntu18.04"
 ```
 
 ### nproxy
@@ -143,17 +125,21 @@ Use it to handle several **t3kit** projects in one local machine. The main advan
 
 ```shell
 docker network create nproxy
-docker run -d -p=80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.1.0
+docker run -d -p 80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.1
 ```
 
 #### HTTPS support for Nginx proxy
 
 ```shell
 docker network create nproxy
-docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.1.0
+docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.0
 ```
 
-#### [Docker compose config for nproxy](https://github.com/t3kit/nproxy)
+#### [Docker-compose config for nproxy](https://github.com/t3kit/nproxy)
+
+_!We highly recommend using this variant (with docker-compose) to setup `nproxy`_
+
+***
 
 ### mkcert
 
@@ -177,7 +163,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
     We can combine two (2&3) steps in one:
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
     ```
 
 4. Install local CA in the system trust store
@@ -198,14 +184,14 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 
 5. Configure the server to use the certificates.
 
-    Just start [nproxy](#nproxy) with HTTPS support.
+    Just start [nproxy](https://github.com/t3kit/nproxy) with HTTPS support.
 
 #### Options
 
 - `t3kit_first_setup` - create a root certificate for a local certificate authority and generate locally-trusted certificates for `*.t3.localhost` domains.
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
     ```
 
     *Note:* With this wildcard based certificate we can have any amount of third-level domain virtual hosts without creating new certificates.
@@ -213,19 +199,19 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 - `local_ca` - create a root certificate for a local certificate authority
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 local_ca
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 local_ca
     ```
 
 - `t3_localhost` - generate locally-trusted certificates for `*.t3.localhost` domains
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 t3_localhost
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3_localhost
     ```
 
 - `add` - generate `.localhost` based locally-trusted certificates
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 add test
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 add test
     ```
 
     It will create a locally-trusted certificate for `test.localhost` domain
@@ -233,7 +219,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
 - generate custom locally-trusted certificates
 
     ```shell
-    docker run --rm -v $PWD:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
     ```
 
     It will create a locally-trusted certificate for `newsite.local` domain
