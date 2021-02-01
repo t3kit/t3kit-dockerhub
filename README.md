@@ -3,7 +3,7 @@
 Docker images to run t3kit and TYPO3 locally
 
 ![](https://github.com/t3kit/t3kit-dockerhub/workflows/Code%20Guidelines/badge.svg)
-![](https://github.com/t3kit/t3kit-dockerhub/workflows/Docker%20images/badge.svg)
+![](https://github.com/t3kit/t3kit-dockerhub/workflows/Build%20Docker%20images/badge.svg)
 
 ## Table of contents
 
