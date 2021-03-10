@@ -39,6 +39,11 @@ RUN ./configure --with-compat --add-dynamic-module=../ngx_brotli
 RUN make modules
 # ############################################################
 
+# install composer
+############################################################
+FROM composer:2 AS composer
+# ############################################################
+
 FROM php:7.4-fpm-buster
 
 LABEL os="debian:buster-slim"
@@ -66,6 +71,8 @@ RUN apt-get update \
     libicu-dev \
     # Install tools
     nano\
+    git\
+    ssh\
     graphicsmagick \
     mariadb-client \
     iputils-ping \
@@ -128,6 +135,9 @@ RUN apt-get update \
 COPY --from=build /tmp/nginx-$NGINX_VERSION/objs/*.so /etc/nginx/modules/
 COPY configuration/nginx.conf /etc/nginx/
 COPY configuration/conf.d/typo3.conf /etc/nginx/conf.d/default.conf
+
+# Add Composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN mkdir -vp /var/www/html/public
 RUN touch  /var/www/html/public/index.html

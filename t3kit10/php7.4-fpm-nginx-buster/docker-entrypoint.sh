@@ -4,11 +4,12 @@ set -e
 set -o pipefail
 
 # Make www-data user use id from hosts user to make shared folder writable.
-echo "USER_ID = $USER_ID"
+# Only for Linux.
 if [ -z "$USER_ID" ]
 then
-    echo "USER_ID variable is not set."
+    echo "USER_ID variable is not set"
 else
+    echo "USER_ID = $USER_ID"
     if [ "$USER_ID" = "mac" ]
     then
         echo "Host OS = macOS"
@@ -21,8 +22,8 @@ else
             usermod -u "${USER_ID}" www-data
         fi
     fi
+    id www-data
 fi
-id www-data
 
 # Add VIRTUAL HOST to hosts file on web container
 if [[ -n $VIRTUAL_HOST ]]
@@ -40,24 +41,31 @@ then
     done
 fi
 
-# set folder permissions
-# var
-if [[ -d /var/www/html/var/ ]]
+if [ -z "$SKIP_FOLDER_PERMISSIONS" ]
 then
-    chown www-data /var/www/html/var/
-fi
-# typo3temp
-if [[ -d /var/www/html/public/typo3temp/ ]]
-then
-    chown www-data /var/www/html/public/typo3temp/
-fi
-# fileadmin
-if [[ -d /var/www/html/public/fileadmin/ ]]
-then
-    chown www-data /var/www/html/public/fileadmin/
+    # set folder permissions
+    # var
+    if [[ -d /var/www/html/var/ ]]
+    then
+        chown www-data /var/www/html/var/
+    fi
+    # typo3temp
+    if [[ -d /var/www/html/public/typo3temp/ ]]
+    then
+        chown www-data /var/www/html/public/typo3temp/
+    fi
+    # fileadmin
+    if [[ -d /var/www/html/public/fileadmin/ ]]
+    then
+        chown www-data /var/www/html/public/fileadmin/
+    fi
+    echo "Folder permissions updated succesfully"
 fi
 
-echo "Start PHP-FPM"
-php-fpm -D
+if [ -z "$SKIP_PHP_FPM" ]
+then
+    echo "Start PHP-FPM"
+    php-fpm -D
+fi
 
 exec "$@"
