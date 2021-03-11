@@ -73,6 +73,7 @@ RUN apt-get update \
     nano\
     git\
     ssh\
+    unzip\
     graphicsmagick \
     mariadb-client \
     iputils-ping \
