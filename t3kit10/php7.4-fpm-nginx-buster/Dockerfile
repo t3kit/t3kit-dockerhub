@@ -29,7 +29,7 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
-RUN wget https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz
+RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz
 RUN tar zxvf nginx-"$NGINX_VERSION".tar.gz
 RUN git clone https://github.com/google/ngx_brotli.git
 WORKDIR /tmp/ngx_brotli
