@@ -8,10 +8,14 @@ set -o pipefail
 if [ -z "$USER_ID" ]
 then
     echo "USER_ID variable is not set"
+    # enable ssh-agent forwarding on macOS by default if no USER_ID defined
+    export SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
 else
     echo "USER_ID = $USER_ID"
     if [ "$USER_ID" = "mac" ]
     then
+        # enable ssh-agent forwarding on macOS by default if USER_ID = mac
+        export SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
         echo "Host OS = macOS"
     else
         # fetch current userid and groupid for user www-data
@@ -26,22 +30,25 @@ else
 fi
 
 # Add VIRTUAL HOST to hosts file on web container
-if [[ -n $VIRTUAL_HOST ]]
+if [[ -z $COMPOSER_MODE ]]
 then
-    IFS=', ' read -r -a hosts <<< "$VIRTUAL_HOST"
-    for host in "${hosts[@]}"
-    do
-        if grep -q "$host" /etc/hosts
-        then
-            echo "$host already exists"
-        else
-            echo "127.0.0.1 ${host}" >> /etc/hosts
-            echo "$host added succesfully"
-        fi
-    done
+    if [[ -n $VIRTUAL_HOST ]]
+    then
+        IFS=', ' read -r -a hosts <<< "$VIRTUAL_HOST"
+        for host in "${hosts[@]}"
+        do
+            if grep -q "$host" /etc/hosts
+            then
+                echo "$host already exists"
+            else
+                echo "127.0.0.1 ${host}" >> /etc/hosts
+                echo "$host added succesfully"
+            fi
+        done
+    fi
 fi
 
-if [ -z "$SKIP_FOLDER_PERMISSIONS" ]
+if [[ -z "$SKIP_FOLDER_PERMISSIONS" && -z "$COMPOSER_MODE" ]]
 then
     # set folder permissions
     # var
@@ -62,10 +69,16 @@ then
     echo "Folder permissions updated succesfully"
 fi
 
-if [ -z "$SKIP_PHP_FPM" ]
+if [[ -z "$SKIP_PHP_FPM" && -z "$COMPOSER_MODE" ]]
 then
     echo "Start PHP-FPM"
     php-fpm -D
+fi
+
+if [[ -n "$GITHUB_TOKEN" ]]
+then
+    # COMPOSER_AUTH
+    export COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GITHUB_TOKEN\"}}"
 fi
 
 exec "$@"
