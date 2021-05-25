@@ -8,14 +8,10 @@ set -o pipefail
 if [ -z "$USER_ID" ]
 then
     echo "USER_ID variable is not set"
-    # enable ssh-agent forwarding on macOS by default if no USER_ID defined
-    export SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
 else
     echo "USER_ID = $USER_ID"
     if [ "$USER_ID" = "mac" ]
     then
-        # enable ssh-agent forwarding on macOS by default if USER_ID = mac
-        export SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
         echo "Host OS = macOS"
     else
         # fetch current userid and groupid for user www-data
