@@ -20,30 +20,17 @@ jobs:
         run: npx editorconfig-checker
 
       - name: Lint <nproxy> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < nproxy/Dockerfile
+        run:  docker run -i --rm hadolint/hadolint < nproxy/Dockerfile
 
       - name: Lint <mkcert> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < mkcert/Dockerfile
-
-      # t3kit8.9
-      - name: Lint <t3kit89-php7.3-apache2.4-ubuntu18.04> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit8.9/php7.3-apache2.4-ubuntu18.04/Dockerfile
-
-      - name: Lint <t3kit89-php7.4-apache2.4-ubuntu18.04> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit8.9/php7.4-apache2.4-ubuntu18.04/Dockerfile
-
-      - name: Lint <t3kit89-php7.4-apache2.4-buster> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit8.9/php7.4-apache2.4-buster/Dockerfile
+        run:  docker run -i --rm hadolint/hadolint < mkcert/Dockerfile
 
       # t3kit10
-      - name: Lint <t3kit10-php7.4-apache2.4-buster> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit10/php7.4-apache2.4-buster/Dockerfile
-
       - name: Lint <t3kit10-php7.4-fpm-nginx-buster> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit10/php7.4-fpm-nginx-buster/Dockerfile
+        run:  docker run -i --rm hadolint/hadolint < t3kit10/php7.4-fpm-nginx-buster/Dockerfile
 
       # t3kit11
       - name: Lint <t3kit11-php8-fpm-nginx-buster> Dockerfile (hadolint)
-        run:  docker run -i hadolint/hadolint < t3kit11/php8-fpm-nginx-buster/Dockerfile
+        run:  docker run -i --rm hadolint/hadolint < t3kit11/php8-fpm-nginx-buster/Dockerfile
 
 

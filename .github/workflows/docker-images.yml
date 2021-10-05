@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Docker build <nproxy>
-        run: DOCKER_BUILDKIT=1 docker -D build -t nproxy nproxy/
+        run: docker -D build -t nproxy nproxy/
 
       - name: Run nginx-proxy for t3kit
         run: docker run -d -p=80:80 --name=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro nproxy
@@ -46,71 +46,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Docker build <mkcert>
-        run: DOCKER_BUILDKIT=1 docker -D build -t mkcert mkcert/
+        run: docker -D build -t mkcert mkcert/
 
       - name: Run mkcert t3kit_first_setup
         run: docker run --rm t3kit/mkcert:1.0.0 t3kit_first_setup
-
-  # t3kit8.9
-  t3kit89-php73-apache24-ubuntu1804:
-    name: t3kit89-php7.3-apache2.4-ubuntu18.04
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Docker build <t3kit89-php7.3-apache2.4-ubuntu18.04>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit89-php7.3-apache2.4-ubuntu18.04 t3kit8.9/php7.3-apache2.4-ubuntu18.04/
-
-      - name: Run <t3kit89-php7.3-apache2.4-ubuntu18.04>
-        run: docker run -d --name=t3kit89-php7.3-apache2.4-ubuntu18.04 t3kit89-php7.3-apache2.4-ubuntu18.04
-
-
-      - name: Show running containers
-        run: docker ps
-
-      - name: curl localhost
-        run: docker exec -i t3kit89-php7.3-apache2.4-ubuntu18.04 curl -vfsSLI localhost
-
-  t3kit89-php74-apache24-ubuntu1804:
-    name: t3kit89-php7.4-apache2.4-ubuntu18.04
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Docker build <t3kit89-php7.4-apache2.4-ubuntu18.04>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit89-php7.4-apache2.4-ubuntu18.04 t3kit8.9/php7.4-apache2.4-ubuntu18.04/
-
-      - name: Run <t3kit89-php7.4-apache2.4-ubuntu18.04>
-        run: docker run -d --name=t3kit89-php7.4-apache2.4-ubuntu18.04 t3kit89-php7.4-apache2.4-ubuntu18.04
-
-
-      - name: Show running containers
-        run: docker ps
-
-      - name: curl localhost
-        run: docker exec -i t3kit89-php7.4-apache2.4-ubuntu18.04 curl -vfsSLI localhost
-
-  t3kit89-php74-apache24-buster:
-    name: t3kit89-php7.4-apache2.4-buster
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Docker build <t3kit89-php7.4-apache2.4-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit/8.9-php7.4-apache2.4-buster t3kit8.9/php7.4-apache2.4-buster/
-
-      - name: Run <t3kit89-php7.4-apache2.4-buster>
-        run: docker run -d --name=t3kit89-php7.4-apache2.4-buster t3kit/8.9-php7.4-apache2.4-buster
-
-
-      - name: Show running containers
-        run: docker ps
-
-      - name: curl localhost
-        run: docker exec -i t3kit89-php7.4-apache2.4-buster curl -vfsSLI localhost
 
   # t3kit10
   t3kit10-php74-apache24-buster:
@@ -121,7 +60,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Docker build <t3kit10-php7.4-apache2.4-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.4-apache2.4-buster t3kit10/php7.4-apache2.4-buster/
+        run: docker -D build -t t3kit10-php7.4-apache2.4-buster t3kit10/php7.4-apache2.4-buster/
 
       - name: Run <t3kit10-php7.4-apache2.4-buster>
         run: docker run -d --name=t3kit10-php7.4-apache2.4-buster t3kit10-php7.4-apache2.4-buster
@@ -140,7 +79,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Docker build <t3kit10-php7.4-fpm-nginx-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit10-php7.4-fpm-nginx-buster t3kit10/php7.4-fpm-nginx-buster/
+        run: docker -D build -t t3kit10-php7.4-fpm-nginx-buster t3kit10/php7.4-fpm-nginx-buster/
 
       - name: Run <t3kit10-php7.4-fpm-nginx-buster>
         run: docker run -d --name=t3kit10-php7.4-fpm-nginx-buster t3kit10-php7.4-fpm-nginx-buster
@@ -159,7 +98,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Docker build <t3kit11-php8-fpm-nginx-buster>
-        run: DOCKER_BUILDKIT=1 docker -D build -t t3kit11-php8-fpm-nginx-buster t3kit11/php8-fpm-nginx-buster/
+        run: docker -D build -t t3kit11-php8-fpm-nginx-buster t3kit11/php8-fpm-nginx-buster/
 
       - name: Run <t3kit11-php8-fpm-nginx-buster>
         run: docker run -d --name=t3kit11-php8-fpm-nginx-buster t3kit11-php8-fpm-nginx-buster

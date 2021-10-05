@@ -29,14 +29,14 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
-RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz
-RUN tar zxvf nginx-"$NGINX_VERSION".tar.gz
-RUN git clone https://github.com/google/ngx_brotli.git
+RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz \
+&& tar zxvf nginx-"$NGINX_VERSION".tar.gz \
+&& git clone https://github.com/google/ngx_brotli.git
 WORKDIR /tmp/ngx_brotli
 RUN git submodule update --init
 WORKDIR /tmp/nginx-"$NGINX_VERSION"
-RUN ./configure --with-compat --add-dynamic-module=../ngx_brotli
-RUN make modules
+RUN ./configure --with-compat --add-dynamic-module=../ngx_brotli \
+&& make modules
 # ############################################################
 
 # install composer
@@ -112,7 +112,7 @@ WORKDIR /tmp/nginx
 # hadolint ignore=DL3008,SC2086
 RUN apt-get update \
 && apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \
-&& apt-key adv --keyserver "ha.pool.sks-keyservers.net" --keyserver-options timeout=10 --recv-keys "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62" \
+&& apt-key adv --keyserver "hkp://keyserver.ubuntu.com:80" --keyserver-options timeout=10 --recv-keys "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62" \
 && apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
 && nginxPackages=" \
     nginx=${NGINX_VERSION}-${PKG_RELEASE} \
@@ -140,8 +140,8 @@ COPY configuration/conf.d/typo3.conf /etc/nginx/conf.d/default.conf
 # Add Composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-RUN mkdir -vp /var/www/html/public
-RUN touch  /var/www/html/public/index.html
+RUN mkdir -vp /var/www/html/public \
+&& touch  /var/www/html/public/index.html
 
 ENV VIRTUAL_HOST_1=localhost
 HEALTHCHECK CMD curl -fsSLI $VIRTUAL_HOST_1 || exit 1
