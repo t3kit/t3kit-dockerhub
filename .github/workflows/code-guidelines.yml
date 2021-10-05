@@ -42,4 +42,8 @@ jobs:
       - name: Lint <t3kit10-php7.4-fpm-nginx-buster> Dockerfile (hadolint)
         run:  docker run -i hadolint/hadolint < t3kit10/php7.4-fpm-nginx-buster/Dockerfile
 
+      # t3kit11
+      - name: Lint <t3kit11-php8-fpm-nginx-buster> Dockerfile (hadolint)
+        run:  docker run -i hadolint/hadolint < t3kit11/php8-fpm-nginx-buster/Dockerfile
+
 
