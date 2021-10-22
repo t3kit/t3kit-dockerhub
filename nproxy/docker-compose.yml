@@ -1,0 +1,31 @@
+services:
+
+  nproxy:
+    image: t3kit/nproxy:2.0.0
+    container_name: nproxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ~/.certs/server:/nproxy/certs:ro
+      - type: volume
+        source: dhparam
+        target: /etc/nginx/dhparam
+      - type: volume
+        source: certs
+        target: /etc/nginx/certs
+
+    networks:
+      - nproxy
+    restart: unless-stopped
+
+networks:
+  nproxy:
+    name: nproxy
+
+volumes:
+  dhparam:
+    name: nproxy_dhparam
+  certs:
+    name: nproxy_certs
