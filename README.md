@@ -2,8 +2,8 @@
 
 Docker images to run t3kit and TYPO3 locally
 
-![](https://github.com/t3kit/t3kit-dockerhub/workflows/Code%20Guidelines/badge.svg)
-![](https://github.com/t3kit/t3kit-dockerhub/workflows/Build%20Docker%20images/badge.svg)
+[![Code Guidelines](https://github.com/t3kit/t3kit-dockerhub/actions/workflows/code-guidelines.yml/badge.svg)](https://github.com/t3kit/t3kit-dockerhub/actions/workflows/code-guidelines.yml)
+[![Build Docker images](https://github.com/t3kit/t3kit-dockerhub/actions/workflows/docker-images.yml/badge.svg)](https://github.com/t3kit/t3kit-dockerhub/actions/workflows/docker-images.yml)
 
 ## Table of contents
 
@@ -32,7 +32,8 @@ Docker images to run t3kit and TYPO3 locally
 
 ## Required dependencies
 
-- [Docker](https://docs.docker.com/install/) >= v20.10.2
+- [Docker](https://docs.docker.com/install/) >= v20.10.8
+- [Docker Compose](https://docs.docker.com/compose/cli-command/#installing-compose-v2) >= v2.0.0
 
 ## Image naming convention
 
@@ -60,15 +61,10 @@ t3kit-dockerhub/
 │       ├── typo3.conf     # TYPO3 apache virtual host config
 │       └── typo3.ini      # TYPO3 php config
 └── t3kit10/
-    ├── php7.4-apache2.4-buster/
-    │   ├── docker-entrypoint.sh
-    │   ├── Dockerfile
-    │   ├── typo3.conf      # TYPO3 apache virtual host config
-    │   └── typo3.ini       # TYPO3 php config
     └── php7.4-fpm-nginx-buster/
         ├── docker-entrypoint.sh
         ├── Dockerfile
-        ├── typo3.ini       # TYPO3 php config
+        ├── typo3.ini                # TYPO3 php config
         └── configuration/nginx.conf # nginx config
 ```
 
@@ -87,57 +83,32 @@ support.typo3="10"
 image.name="t3kit/10-php7.4-fpm-nginx-buster"
 ```
 
-### t3kit/10-php7.3-apache2.4-ubuntu18.04
+### t3kit/11-php8-fpm-nginx-buster
 
 ```shell
-Docker image with apache2 server and PHP preinstalled
+Docker image with nginx server and PHP-FPM preinstalled
 
 os="debian:buster-slim"
-http-server="apache2.4"
-php="7.4"
-support.t3kit="10"
-support.typo3="10"
-image.name="t3kit/10-php7.4-apache2.4-buster"
-```
-
-### t3kit/8.9-php7.3-apache2.4-ubuntu18.04
-
-```shell
-Docker image with apache2 server and PHP preinstalled
-
-os="ubuntu:18.04"
-http-server="apache2.4"
-php="7.4"
-support.t3kit="8.9"
-support.typo3="9"
-image.name="t3kit/8.9-php7.4-apache2.4-ubuntu18.04"
+php="8"
+nginx="1.20.1"
+support.t3kit="11"
+support.typo3="11"
+image.name="t3kit/11-php8-fpm-nginx-buster"
 ```
 
 ### nproxy
 
 #### Nginx proxy to use with t3kit project
 
-[Based on Automated Nginx Reverse Proxy for Docker](https://github.com/jwilder/nginx-proxy)
+[Based on Automated Nginx Reverse Proxy for Docker](https://github.com/nginx-proxy/nginx-proxy)
 
 Use it to handle several **t3kit** projects in one local machine. The main advantage of it is just to use one `VIRTUAL_HOST` env variable to separate it from other projects
 
-#### Quick start
+**Setup**
 
-```shell
-docker network create nproxy
-docker run -d -p 80:80 --name=nproxy --restart=unless-stopped --network=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.1
-```
-
-#### HTTPS support for Nginx proxy
-
-```shell
-docker network create nproxy
-docker run -d -p 80:80 -p 443:443 --name=nproxy --restart=unless-stopped --network=nproxy -v ~/.certs/server:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro t3kit/nproxy:1.2.1
-```
-
-#### [Docker-compose config for nproxy](https://github.com/t3kit/nproxy)
-
-_!We highly recommend using this variant (docker-compose) to setup `nproxy`_
+1. Clone this repository
+2. `cd nproxy`
+3. `docker compose up -d` run **nproxy** with docker compose
 
 ***
 
@@ -156,16 +127,32 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
     mkdir ~/.certs
     ```
 
-2. Create local CA
-3. Generate locally-trusted certificates based on local CA.
-
-    We can combine two (2&3) steps in one:
+2. Create local CA and generate locally-trusted certificates based on local CA
+    - `t3kit_first_setup` - create a root certificate for a local certificate authority and generate locally-trusted certificates for `*.t3.localhost` wildcard domains.
 
     ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.1 t3kit_first_setup
     ```
 
-4. Install local CA in the system trust store
+    *Note:* With this wildcard based certificate we can have any amount of third-level domain virtual hosts without creating new certificates.
+
+    - `add` - generate `.localhost` based locally-trusted certificates
+
+    ```shell
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.1 add test
+    ```
+
+    It will create a locally-trusted certificate for `test.localhost` domain
+
+    - generate custom locally-trusted certificates
+
+    ```shell
+    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.1 mkcert newsite.local
+    ```
+
+    It will create a locally-trusted certificate for `newsite.local` domain
+
+3. Install local CA in the system trust store
 
     Import and trust a self-signed CA certificate
 
@@ -181,47 +168,7 @@ This image is based on `mkcert` tool. It is also possible to use it without dock
     TBD
     ```
 
-5. Configure the server to use the certificates.
-
-    Just start [nproxy](https://github.com/t3kit/nproxy) with HTTPS support.
-
-#### Options
-
-- `t3kit_first_setup` - create a root certificate for a local certificate authority and generate locally-trusted certificates for `*.t3.localhost` domains.
-
-    ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3kit_first_setup
-    ```
-
-    *Note:* With this wildcard based certificate we can have any amount of third-level domain virtual hosts without creating new certificates.
-
-- `local_ca` - create a root certificate for a local certificate authority
-
-    ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 local_ca
-    ```
-
-- `t3_localhost` - generate locally-trusted certificates for `*.t3.localhost` domains
-
-    ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 t3_localhost
-    ```
-
-- `add` - generate `.localhost` based locally-trusted certificates
-
-    ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 add test
-    ```
-
-    It will create a locally-trusted certificate for `test.localhost` domain
-
-- generate custom locally-trusted certificates
-
-    ```shell
-    docker run --rm -v ~/.certs:/certs t3kit/mkcert:1.0.0 mkcert newsite.local
-    ```
-
-    It will create a locally-trusted certificate for `newsite.local` domain
+4. Configure the server to use the certificates.
 
 ***
 
