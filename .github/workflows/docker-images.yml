@@ -19,7 +19,7 @@ jobs:
         run: docker run -d -p=80:80 --name=nproxy -v=/var/run/docker.sock:/tmp/docker.sock:ro nproxy
 
       - name: Run whoami container with env VIRTUAL_HOST=t3kit10.local
-        run: docker run -d -e VIRTUAL_HOST=t3kit10.local jwilder/whoami
+        run: docker run -d -e VIRTUAL_HOST=t3kit.local jwilder/whoami
 
       - name: Show nproxy config
         run:  docker exec nproxy cat /etc/nginx/conf.d/default.conf
@@ -35,8 +35,8 @@ jobs:
         with:
           time: '10s'
 
-      - name: curl t3kit10.local
-        run: "curl -vfsSLI -H 'Host: t3kit10.local' --url 'localhost/'"
+      - name: curl t3kit.local
+        run: "curl -vfsSLI -H 'Host: t3kit.local' --url 'localhost/'"
 
   mkcert:
     name: mkcert
@@ -52,25 +52,6 @@ jobs:
         run: docker run --rm t3kit/mkcert:1.0.0 t3kit_first_setup
 
   # t3kit10
-  t3kit10-php74-apache24-buster:
-    name: t3kit10-php7.4-apache2.4-buster
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-
-      - name: Docker build <t3kit10-php7.4-apache2.4-buster>
-        run: docker -D build -t t3kit10-php7.4-apache2.4-buster t3kit10/php7.4-apache2.4-buster/
-
-      - name: Run <t3kit10-php7.4-apache2.4-buster>
-        run: docker run -d --name=t3kit10-php7.4-apache2.4-buster t3kit10-php7.4-apache2.4-buster
-
-      - name: Show running containers
-        run: docker ps
-
-      - name: curl localhost
-        run: docker exec -i t3kit10-php7.4-apache2.4-buster curl -vfsSLI localhost
-
   t3kit10-php74-fpm-nginx-buster:
     name: t3kit10-php7.4-fpm-nginx-buster
     runs-on: ubuntu-latest
@@ -90,6 +71,7 @@ jobs:
       - name: curl localhost
         run: docker exec -i t3kit10-php7.4-fpm-nginx-buster curl -vfsSLI localhost
 
+  # t3kit11
   t3kit11-php8-fpm-nginx-buster:
     name: t3kit11-php8-fpm-nginx-buster
     runs-on: ubuntu-latest
