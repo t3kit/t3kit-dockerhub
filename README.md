@@ -108,7 +108,7 @@ Use it to handle several **t3kit** projects in one local machine. The main advan
 
 1. Clone this repository
 2. `cd nproxy`
-3. `docker compose up -d` run **nproxy** with docker compose
+3. `docker compose up -d` - run nproxy using docker compose
 
 ***
 
