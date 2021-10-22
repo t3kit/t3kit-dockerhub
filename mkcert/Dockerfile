@@ -7,7 +7,7 @@
 FROM golang:1.13.5-alpine
 
 # FiloSottile/mkcert git hash
-LABEL mkcert-hash="cb6311c"
+LABEL mkcert-hash="64cb80e"
 
 # Install git, bash
 RUN apk add --no-cache git=~2.24 \

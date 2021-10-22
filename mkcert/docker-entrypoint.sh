@@ -24,11 +24,6 @@ elif [[ -n "$1" && $1 = "t3_localhost" ]]; then
 elif [[ -n "$1" && $1 = "add" ]]; then
     set -- mkcert -cert-file "$2".localhost.crt -key-file "$2".localhost.key "$2".localhost "*.$2.localhost"
 
-# check if the first argument = add
-elif [[ -n "$1" && $1 = "add" ]]; then
-    set -- mkcert -cert-file "$2".localhost.crt -key-file "$2".localhost.key "$2".localhost "*.$2.localhost"
-
-
 # check if the first letter in argument = "-"
 elif [ "$(printf %c "$1")" = '-' ]; then
     set -- mkcert "$@"
