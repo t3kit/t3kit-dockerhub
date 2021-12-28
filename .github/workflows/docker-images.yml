@@ -49,7 +49,7 @@ jobs:
         run: docker -D build -t mkcert mkcert/
 
       - name: Run mkcert t3kit_first_setup
-        run: docker run --rm t3kit/mkcert:1.0.0 t3kit_first_setup
+        run: docker run --rm mkcert t3kit_first_setup
 
   # t3kit10
   t3kit10-php74-fpm-nginx-buster:
