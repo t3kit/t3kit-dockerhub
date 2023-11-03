@@ -33,4 +33,6 @@ jobs:
       - name: Lint <t3kit11-php8-fpm-nginx-buster> Dockerfile (hadolint)
         run:  docker run -i --rm hadolint/hadolint < t3kit11/php8-fpm-nginx-buster/Dockerfile
 
-
+      # t3kit12 - docker build -t t3kit/12-php8-fpm-nginx-bookworm:1.0.0 .
+      - name: Lint <t3kit12-php8-fpm-nginx-bookworm> Dockerfile (hadolint)
+        run:  docker run -i --rm hadolint/hadolint < t3kit12/php8-fpm-nginx-bookworm/Dockerfile
