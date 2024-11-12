@@ -36,8 +36,9 @@ RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz \
 && git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
 
 WORKDIR /tmp/ngx_brotli/deps/brotli
-RUN mkdir out && cd out \
-&& cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
+RUN mkdir out
+WORKDIR /tmp/ngx_brotli/deps/brotli/out
+run cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
 && cmake --build . --config Release --target brotlienc
 
 WORKDIR /tmp/nginx-"$NGINX_VERSION"
@@ -56,7 +57,7 @@ FROM composer:2.1 AS composer
 
 # PHP-FPM
 ############################################################
-FROM php:8.2.12-fpm-bookworm
+FROM php:8.2-fpm-bookworm
 
 LABEL os="debian:bookworm-slim"
 LABEL php="8"
@@ -126,7 +127,7 @@ WORKDIR /tmp/nginx
 # hadolint ignore=DL3008,SC2086
 RUN apt-get update \
 && apt-get install --no-install-recommends --no-install-suggests -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring \
-&& apt install --no-install-recommends --no-install-suggests -y nginx libnginx-mod-http-geoip libnginx-mod-http-xslt-filter libnginx-mod-http-image-filter libnginx-mod-http-js libnginx-mod-stream-js \
+&& apt-get install --no-install-recommends --no-install-suggests -y nginx libnginx-mod-http-geoip libnginx-mod-http-xslt-filter libnginx-mod-http-image-filter libnginx-mod-http-js libnginx-mod-stream-js \
 && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
 && apt-get purge -y --auto-remove && rm -rf "/tmp/nginx" \
 && ln -sf /dev/stdout /var/log/nginx/access.log \
