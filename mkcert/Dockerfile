@@ -15,8 +15,11 @@ RUN apk add --no-cache git=~2.45 \
 
 # Install mkcert
 # RUN go install filippo.io/mkcert@1.4.4
-RUN git clone https://github.com/FiloSottile/mkcert && cd mkcert \
-&& go build -ldflags "-X main.Version=$(git describe --tags)"
+WORKDIR /tmp
+RUN git clone https://github.com/FiloSottile/mkcert
+WORKDIR /tmp/mkcert
+RUN go build -ldflags "-X main.Version=$(git describe --tags)"
+RUN mv mkcert /usr/local/bin/
 
 # add Docker entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
