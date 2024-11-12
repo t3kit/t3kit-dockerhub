@@ -90,3 +90,23 @@ jobs:
 
       - name: curl localhost
         run: docker exec -i t3kit11-php8-fpm-nginx-buster curl -vfsSLI localhost
+
+  # t3kit12
+  t3kit12-php8-fpm-nginx-bookworm:
+    name: t3kit12-php8-fpm-nginx-bookworm
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Docker build <t3kit12-php8-fpm-nginx-bookworm>
+        run: docker -D build -t t3kit12-php8-fpm-nginx-bookworm t3kit12/php8-fpm-nginx-bookworm/
+
+      - name: Run <t3kit12-php8-fpm-nginx-bookworm>
+        run: docker run -d --name=t3kit12-php8-fpm-nginx-bookworm t3kit12-php8-fpm-nginx-bookworm
+
+      - name: Show running containers
+        run: docker ps
+
+      - name: curl localhost
+        run: docker exec -i t3kit12-php8-fpm-nginx-bookworm curl -vfsSLI localhost
