@@ -4,17 +4,19 @@
 # based on https://github.com/FiloSottile/mkcert
 ############################################################
 
-FROM golang:1.13.5-alpine
+FROM golang:1.23.3-alpine3.20
 
 # FiloSottile/mkcert git hash
-LABEL mkcert-hash="64cb80e"
+LABEL mkcert-hash="2a46726"
 
 # Install git, bash
-RUN apk add --no-cache git=~2.24 \
-&& apk add --no-cache bash=~5.0
+RUN apk add --no-cache git=~2.45 \
+&& apk add --no-cache bash=~5.2
 
 # Install mkcert
-RUN go get -v -u github.com/FiloSottile/mkcert
+# RUN go install filippo.io/mkcert@1.4.4
+RUN git clone https://github.com/FiloSottile/mkcert && cd mkcert \
+&& go build -ldflags "-X main.Version=$(git describe --tags)"
 
 # add Docker entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
