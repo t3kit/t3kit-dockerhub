@@ -32,8 +32,10 @@ WORKDIR /tmp
 RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz \
 && tar zxvf nginx-"$NGINX_VERSION".tar.gz \
 && git clone https://github.com/google/ngx_brotli.git
+
 WORKDIR /tmp/ngx_brotli
-RUN git submodule update --init
+RUN git reset --hard 9aec15e2aa6feea2113119ba06460af70ab3ea62 \
+&& git submodule update --init
 WORKDIR /tmp/nginx-"$NGINX_VERSION"
 RUN ./configure --with-compat --add-dynamic-module=../ngx_brotli \
 && make modules

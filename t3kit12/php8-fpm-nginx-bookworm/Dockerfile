@@ -12,7 +12,8 @@
 
 # install ngx_brotli
 ############################################################
-FROM nginx:1.20.1 AS build
+# FROM nginx:1.24.0 AS build
+FROM nginx:1.22.1 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -32,14 +33,17 @@ RUN apt-get update \
 WORKDIR /tmp
 RUN wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz \
 && tar zxvf nginx-"$NGINX_VERSION".tar.gz \
-&& git clone https://github.com/google/ngx_brotli.git
+&& git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
 
-WORKDIR /tmp/ngx_brotli
-RUN git reset --hard 9aec15e2aa6feea2113119ba06460af70ab3ea62 \
-&& git submodule update --init
+WORKDIR /tmp/ngx_brotli/deps/brotli
+RUN mkdir out
+WORKDIR /tmp/ngx_brotli/deps/brotli/out
+run cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
+&& cmake --build . --config Release --target brotlienc
+
 WORKDIR /tmp/nginx-"$NGINX_VERSION"
-RUN ./configure --with-compat --add-dynamic-module=../ngx_brotli \
-&& make modules
+RUN ./configure --with-compat --add-dynamic-module=/tmp/ngx_brotli && make modules \
+&& ls -lah
 # ############################################################
 
 
@@ -53,18 +57,18 @@ FROM composer:2.1 AS composer
 
 # PHP-FPM
 ############################################################
-FROM php:8-fpm-buster
+FROM php:8.2-fpm-bookworm
 
-LABEL os="debian:buster-slim"
+LABEL os="debian:bookworm-slim"
 LABEL php="8"
-LABEL nginx="1.20.1"
-LABEL support.t3kit="11"
-LABEL support.typo3="11"
-LABEL image.name="t3kit/11-php8-fpm-nginx-buster"
+LABEL nginx="1.22.1"
+LABEL support.t3kit="12"
+LABEL support.typo3="12"
+LABEL image.name="t3kit/12-php8-fpm-nginx-bookworm"
 
-ENV NGINX_VERSION 1.20.1
-ENV NJS_VERSION 0.5.3
-ENV PKG_RELEASE 1~buster
+ENV NGINX_VERSION 1.22.1
+ENV NJS_VERSION 0.8.2
+ENV PKG_RELEASE 9~bookworm
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm-256color
 
@@ -117,32 +121,20 @@ COPY typo3.ini /usr/local/etc/php/conf.d/
 RUN mkdir -vp /tmp/nginx
 WORKDIR /tmp/nginx
 
+# update
+
 # instal nginx
 # hadolint ignore=DL3008,SC2086
 RUN apt-get update \
-&& apt-get install --no-install-recommends --no-install-suggests -y gnupg1 ca-certificates \
-&& apt-key adv --keyserver "hkp://keyserver.ubuntu.com:80" --keyserver-options timeout=10 --recv-keys "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62" \
-&& apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/* \
-&& nginxPackages=" \
-    nginx=${NGINX_VERSION}-${PKG_RELEASE} \
-    nginx-module-xslt=${NGINX_VERSION}-${PKG_RELEASE} \
-    nginx-module-geoip=${NGINX_VERSION}-${PKG_RELEASE} \
-    nginx-module-image-filter=${NGINX_VERSION}-${PKG_RELEASE} \
-    nginx-module-njs=${NGINX_VERSION}+${NJS_VERSION}-${PKG_RELEASE} \
-" \
-&& echo "deb https://nginx.org/packages/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
-&& echo "deb-src https://nginx.org/packages/debian/ buster nginx" >> /etc/apt/sources.list.d/nginx.list \
-&& apt-get update \
-&& apt-get build-dep -y $nginxPackages \
-&& apt-get source --compile $nginxPackages \
-&& apt-get install --no-install-recommends --no-install-suggests -y $nginxPackages gettext-base curl \
+&& apt-get install --no-install-recommends --no-install-suggests -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring \
+&& apt-get install --no-install-recommends --no-install-suggests -y nginx libnginx-mod-http-geoip libnginx-mod-http-xslt-filter libnginx-mod-http-image-filter libnginx-mod-http-js libnginx-mod-stream-js \
 && apt-get remove --purge --auto-remove -y && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list \
 && apt-get purge -y --auto-remove && rm -rf "/tmp/nginx" \
 && ln -sf /dev/stdout /var/log/nginx/access.log \
 && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Nginx config
-COPY --from=build /tmp/nginx-$NGINX_VERSION/objs/*.so /etc/nginx/modules/
+COPY --from=build /tmp/nginx-$NGINX_VERSION/objs/*.so /usr/lib/nginx/modules/
 COPY configuration/nginx.conf /etc/nginx/
 COPY configuration/conf.d/typo3.conf /etc/nginx/conf.d/default.conf
 
